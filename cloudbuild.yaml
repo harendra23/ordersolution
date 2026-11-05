@@ -1,0 +1,19 @@
+steps:
+
+# Deploy Order API
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: bash
+  args:
+    - '-c'
+    - |
+      cd OrderApi
+      gcloud app deploy app.yaml --quiet
+
+# Deploy Order UI
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: bash
+  args:
+    - '-c'
+    - |
+      cd OrderUI
+      gcloud app deploy app.yaml --quiet
