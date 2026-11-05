@@ -37,4 +37,22 @@ public class OrdersController : ControllerBase
 
         return Ok(order);
     }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteOrder(Guid id)
+    {
+        var order =
+            _context.Orders.FirstOrDefault(x => x.Id == id);
+
+        if (order == null)
+        {
+            return NotFound();
+        }
+
+        _context.Orders.Remove(order);
+
+        _context.SaveChanges();
+
+        return NoContent();
+    }
 }

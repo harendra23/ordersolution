@@ -74,6 +74,8 @@
             <th>Qty</th>
             <th>Unit Price</th>
             <th>Total</th>
+            <th>Action</th>
+            
         </tr>
     </thead>
 
@@ -106,6 +108,12 @@ async function loadOrders()
             <td>${order.quantity}</td>
             <td>${order.unitPrice}</td>
             <td>${order.totalAmount}</td>
+            <td>
+                <button
+                    onclick="deleteOrder('${order.id}')">
+                    Delete
+                </button>
+            </td>
         </tr>`;
     });
 
@@ -142,6 +150,23 @@ async function createOrder()
 
     loadOrders();
 }
+
+async function deleteOrder(id)
+{
+    if (!confirm("Delete this order?"))
+    {
+        return;
+    }
+
+    await fetch(
+        `${API_BASE}/api/orders/${id}`,
+        {
+            method: 'DELETE'
+        });
+
+    loadOrders();
+}
+
 
 loadOrders();
 
