@@ -1,0 +1,153 @@
+@{
+    ViewData["Title"] = "Order Management";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Management</title>
+
+    <style>
+
+        body{
+            font-family:Arial;
+            margin:40px;
+        }
+
+        table{
+            border-collapse:collapse;
+            width:100%;
+        }
+
+        th, td{
+            border:1px solid #ccc;
+            padding:8px;
+        }
+
+        input{
+            padding:8px;
+            margin:5px;
+        }
+
+        button{
+            padding:8px 15px;
+        }
+
+    </style>
+</head>
+<body>
+
+<h1>Order Management</h1>
+
+<div>
+
+    <input id="customerName"
+           placeholder="Customer Name"/>
+
+    <input id="productName"
+           placeholder="Product Name"/>
+
+    <input id="quantity"
+           type="number"
+           placeholder="Quantity"/>
+
+    <input id="unitPrice"
+           type="number"
+           placeholder="Unit Price"/>
+
+    <button onclick="createOrder()">
+        Create Order
+    </button>
+
+</div>
+
+<hr/>
+
+<h2>Orders</h2>
+
+<table>
+
+    <thead>
+        <tr>
+            <th>Customer</th>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+
+    <tbody id="ordersTable">
+    </tbody>
+
+</table>
+
+<script>
+
+const API_BASE =
+    "https://orders-api-dot-project-a90c115e-0859-485a-9b5.uc.r.appspot.com";
+
+async function loadOrders()
+{
+    const response =
+        await fetch(`${API_BASE}/api/orders`);
+
+    const orders =
+        await response.json();
+
+    let html = '';
+
+    orders.forEach(order =>
+    {
+        html += `
+        <tr>
+            <td>${order.customerName}</td>
+            <td>${order.productName}</td>
+            <td>${order.quantity}</td>
+            <td>${order.unitPrice}</td>
+            <td>${order.totalAmount}</td>
+        </tr>`;
+    });
+
+    document.getElementById('ordersTable').innerHTML = html;
+}
+
+async function createOrder()
+{
+    const order =
+    {
+        customerName:
+            document.getElementById('customerName').value,
+
+        productName:
+            document.getElementById('productName').value,
+
+        quantity:
+            parseInt(document.getElementById('quantity').value),
+
+        unitPrice:
+            parseFloat(document.getElementById('unitPrice').value)
+    };
+
+    await fetch(
+        `${API_BASE}/api/orders`,
+        {
+            method: 'POST',
+            headers:
+            {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(order)
+        });
+
+    loadOrders();
+}
+
+loadOrders();
+
+</script>
+
+
+
+</body>
+</html>

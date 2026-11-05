@@ -1,0 +1,17 @@
+service: orders-api
+
+runtime: aspnetcore
+env: flex
+
+runtime_config:
+  operating_system: ubuntu22
+
+beta_settings:
+  cloud_sql_instances: project-a90c115e-0859-485a-9b5:us-central1:order-db
+
+env_variables:
+  ASPNETCORE_ENVIRONMENT: Production
+
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 3
